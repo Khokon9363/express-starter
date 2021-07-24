@@ -1,28 +1,30 @@
-// external dependencies
+// External dependencies
 const express = require('express')
-const path = require('path')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
+const path = require('path')
 const cookieParser = require('cookie-parser')
 
-// internal dependencies
-const { errorMiddleware, notFoundMiddleware } = require('./middlewares/common/errorMiddleware')
+// Internal dependencies
+const { notFoundMiddleware, defaultErrorMiddleware } = require('./app/http/middlewares/error/errorMiddleware')
+const homeRouter = require('./routes/homeRouter')
 const loginRouter = require('./routes/loginRouter')
-const inboxRouter = require('./routes/inboxRouter')
-const usersRouter = require('./routes/usersRouter')
+const registerRouter = require('./routes/registerRouter')
+const dashboardRouter = require('./routes/dashboardRouter')
 
-// initialize project
+// app initialization
 const app = express()
 dotenv.config()
 
-// Database connection
-mongoose.connect((process.env.MONGO_CONNECTION_STRING), {
+// database connection
+mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
-}).then(() => {
+}).then((res) => {
     console.log('Database connected')
 }).catch((err) => {
-    console.log(err)
+    console.log('Database connection failed', err)
 })
 
 // request parser
@@ -31,7 +33,7 @@ app.use(express.urlencoded({
     extended: true
 }))
 
-// view engine setup
+// view engine
 app.set('view engine', 'ejs')
 
 // define static folder
@@ -41,17 +43,18 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
 // routes
-app.use('/', loginRouter)
-app.use('/inbox', inboxRouter)
-app.use('/users', usersRouter)
+app.use('/', homeRouter)
+app.use('/login', loginRouter)
+app.use('/register', registerRouter)
+app.use('/:role/dashboard', dashboardRouter)
 
-// 404 error handling
+// 404 error
 app.use(notFoundMiddleware)
 
-// error handling
-app.use(errorMiddleware)
+// error
+app.use(defaultErrorMiddleware)
 
-// start application on the specific PORT
+// start app on a specific PORT
 app.listen(process.env.PORT, () => {
     console.log(`Application running on http://localhost:${process.env.PORT}`)
 })

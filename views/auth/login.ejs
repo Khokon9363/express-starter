@@ -1,0 +1,28 @@
+<%- include('./../layouts/auth/header.ejs') %>
+
+<div id="login-container">
+    
+    <%- include('./../layouts/auth/branding.ejs') %>
+
+    <div id="login-form">
+        <form method="POST" action="/login">
+            <input type="text" name="phone_email" placeholder="Enter mobile or email" value="<%= data.phone_email %>">
+            <% if(errors.phone_email){ %>
+                <p class="error show"><%= errors.phone_email.msg %></p>
+            <% } %>
+            
+            <input type="password" name="password" placeholder="Enter password">
+            <% if(errors.password){ %>
+                <p class="error show"><%= errors.password.msg %></p>
+            <% } %>
+            
+            <% if(errors.common){ %>
+                <p class="error show"><%= errors.common.msg %></p>
+            <% } %>
+
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</div>
+
+<%- include('./../layouts/auth/footer.ejs') %>

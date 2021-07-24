@@ -1,0 +1,48 @@
+<%- include('./layouts/auth/header.ejs') %>
+
+<div id="login-container">
+    
+    <style>
+        h1{
+            text-align: center;
+            margin-top: 60px;
+            color: #26b926;
+        }
+    </style>
+
+    <%- include('./layouts/auth/branding.ejs') %>
+
+</div>
+
+<script>
+    const success = '<%- JSON.stringify(data.success) %>'
+        if(success){
+            toast(JSON.parse(success).message, 'success')
+            onload = () => {
+                setTimeout(() => {
+                    location.replace('/')
+                }, 3000);
+            }
+        }
+
+    const danger = '<%- JSON.stringify(data.danger) %>'
+        if(danger){
+            toast(JSON.parse(danger).message, 'danger')
+            onload = () => {
+                setTimeout(() => {
+                    location.replace('/')
+                }, 3000);
+            }
+        }
+
+    const warning = '<%- JSON.stringify(data.warning) %>'
+        if(warning){
+            toast(JSON.parse(warning).message, 'warning')
+            onload = () => {
+                setTimeout(() => {
+                    location.replace('/')
+                }, 3000);
+            }
+        }
+</script>
+<%- include('./layouts/auth/footer.ejs') %>

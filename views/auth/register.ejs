@@ -1,0 +1,46 @@
+<%- include('./../layouts/auth/header.ejs') %>
+
+<div id="login-container">
+    
+    <%- include('./../layouts/auth/branding.ejs') %>
+
+    <div id="login-form">
+        <form method="POST" action="/register" enctype="multipart/form-data">
+            
+            <% if(errors.common){ %>
+                <p class="error show"><%= errors.common.msg %></p>
+            <% } %>
+
+            <input type="text" name="name" placeholder="Enter your name" value="<%= data.name %>">
+            <% if(errors.name){ %>
+                <p class="error show"><%= errors.name.msg %></p>
+            <% } %>
+
+            <input type="text" name="phone" placeholder="Enter your phone number" value="<%= data.phone %>">
+            <% if(errors.phone){ %>
+                <p class="error show"><%= errors.phone.msg %></p>
+            <% } %>
+
+            <input type="text" name="email" placeholder="Enter your email" value="<%= data.email %>">
+            <% if(errors.email){ %>
+                <p class="error show"><%= errors.email.msg %></p>
+            <% } %>
+
+            <input type="file" name="avatar">
+            <% if(errors.avatar){ %>
+                <p class="error show"><%= errors.avatar.msg %></p>
+            <% } %>
+            
+            <input type="password" name="password" placeholder="Enter password" value="<%= data.password %>">
+            <% if(errors.password){ %>
+                <p class="error show"><%= errors.password.msg %></p>
+            <% } %>
+
+            <input type="password" name="password_confirmation" placeholder="Enter password again" value="<%= data.password_confirmation %>">
+
+            <input type="submit" value="Register">
+        </form>
+    </div>
+</div>
+
+<%- include('./../layouts/auth/footer.ejs') %>

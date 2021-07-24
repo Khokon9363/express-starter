@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="shortcut icon" href="/files/images/favicon.png" />
+    <link rel="stylesheet" href="/css/toastify.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/toastify.js"></script>
+  </head>
+  <body>
+    <div class="menu">
+      <div class="menu-item"><a href="/">Home</a></div>
+      
+      <% if(loggedInUser && loggedInUser.name){ %>
+        <div class="menu-item"><a href="/<%= loggedInUser.role.toLowerCase() %>/dashboard">Dashboard</a></div>
+        <div class="menu-item"><a href="#"><%= loggedInUser.name %></a></div>
+        <div class="menu-item"><a href="#" onclick="logout()">Logout</a></div>
+      <% }else{ %>
+        <div class="menu-item"><a href="/login">Login</a></div>
+        <div class="menu-item"><a href="/register">Register</a></div>
+      <% } %>
+    </div>
+
+    <script>
+      function toast(message = 'No message defiend !!', color) {
+          let colorCode
+          switch (color) {
+            case 'success':
+              colorCode = '#2eef72'
+              break;
+
+            case 'warning':
+              colorCode = '#fdfff0'
+              break;
+
+            case 'danger':
+              colorCode = 'rgb(255 208 203)'
+              break;
+          
+            default:
+              colorCode = 'aliceblue'
+              break;
+          }
+          Toastify({
+          text: message,
+          duration: 3000,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          backgroundColor: colorCode
+        }).showToast()
+      }
+    </script>
+    
+    <script>
+      async function logout() {
+        let sure = confirm("Are you sure to be logged out ?")
+        if(sure){
+          const loggedOut = await fetch('/login/logout', {
+            method: 'POST'
+          })
+          if(loggedOut && loggedOut.status === 200){
+            location.replace('/login')
+          }
+        }
+      }
+    </script>

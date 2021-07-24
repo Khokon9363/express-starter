@@ -1,11 +1,11 @@
 {
-  "name": "chat-application",
+  "name": "express-micro-starter-kit",
   "version": "1.0.0",
-  "description": "Chat application",
+  "description": "Express js micro starter kit",
   "main": "app.js",
   "scripts": {
     "start": "SET NODE_ENV=development & nodemon app.js",
-    "prod": "SET NODE_ENV=production & node app.js"
+    "production": "SET NODE_ENV=production & node app.js"
   },
   "author": "Hridoy",
   "license": "ISC",

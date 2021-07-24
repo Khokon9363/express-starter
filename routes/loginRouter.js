@@ -1,25 +1,20 @@
-// external dependencies
+// External dependencies
 const express = require('express')
+
+// Internal dependencies
+const decorateHTMLResponse = require('../app/http/middlewares/decorateHTML/decorateHTMLResponse')
+const { index, login, logout } = require('../app/http/controllers/auth/login/loginController')
+const { auth, guest } = require('../app/http/middlewares/authOrGuest/authOrGuest')
+const { loginValidator, loginValidatorChecker } = require('../app/http/helpers/validators/loginValidator')
 
 // create router
 const router = express.Router()
 
-// internal dependencies
-const { guest } = require('../middlewares/common/checkLogin')
-const decorateHtmlResponse = require('../middlewares/common/decorateHtmlResponse')
-const { getLogin, login, logout } = require('../controller/auth/loginController')
-const { doLoginValidators, doLoginValidationHandler } = require('../middlewares/login/loginValidators')
+const pageTitle = 'Login'
 
-// set page title
-const page_title = "Login"
+router.get('/', decorateHTMLResponse(pageTitle), guest, index)
+router.post('/', decorateHTMLResponse(pageTitle), guest, loginValidator, loginValidatorChecker, login)
 
-// view
-router.get('/', decorateHtmlResponse(page_title), guest, getLogin)
-
-// login
-router.post('/', decorateHtmlResponse(page_title), doLoginValidators, doLoginValidationHandler, login)
-
-// logout
-router.delete('/', logout)
+router.post('/logout', auth, logout)
 
 module.exports = router
